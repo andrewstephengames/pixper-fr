@@ -1,1 +1,1 @@
-# pixper-fr
+# pixper
