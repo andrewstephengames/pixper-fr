@@ -80,7 +80,7 @@ treeNum = 0
 healthFont = pygame.font.Font (os.path.normpath(os.path.join ("./", "res/fonts/Emulogic.ttf")), 20)
 scoreFont = pygame.font.Font (os.path.normpath(os.path.join("./", "res/fonts/Emulogic.ttf")), 20)
 startFont = pygame.font.Font (os.path.normpath(os.path.join("./", "res/fonts/Emulogic.ttf")), 40)
-endFont = pygame.font.Font (os.path.normpath(os.path.join("./", "res/fonts/Emulogic.ttf")), 70)
+endFont = pygame.font.Font (os.path.normpath(os.path.join("./", "res/fonts/Emulogic.ttf")), 30)
 titleFont = pygame.font.Font (os.path.normpath(os.path.join("./", "res/fonts/Emulogic.ttf")), 100)
 
 # sounds
@@ -295,7 +295,7 @@ def generateBomb (init):
                     if bombImg[i] != bombTile:
                          enemySpeed += 0.5
                          RNG = (bombX[i]+bombY[i])/2
-                         obstacleHitter = "Enemy"
+                         obstacleHitter = "Ennemi"
                          #c.execute("INSERT OR REPLACE INTO Obstacles VALUES (?, ?, ?)", (obstacleHitter, RNG, "Bomb"))
                          c.execute("INSERT OR REPLACE INTO Obstacles VALUES (?, ?, ?)", (obstacleHitter, RNG, "Hole"))
                          screen.blit (bombTile, (bombX[i], bombY[i]))
@@ -406,22 +406,22 @@ def mainMenu ():
                     running = False
 #          screen.blit (bgImg, (0, 0))
           menu.font = titleFont
-          menu.add.text_input('Name: ', default='Player', onchange=storePlayer)
-          menu.add.button('Toggle Difficulty', toggleDifficulty)
-          menu.add.button('Play', startGame)
-          menu.add.button('Stats', menu2)
-          menu.add.button('Quit', pygame_menu.events.EXIT)
-          menu.add.button('Toggle Music', toggleMusic)
+          menu.add.text_input('Nom: ', default='Joueur', onchange=storePlayer)
+          menu.add.button('Difficulté', toggleDifficulty)
+          menu.add.button('Jouer', startGame)
+          menu.add.button('Statistiques', menu2)
+          menu.add.button('Quitter', pygame_menu.events.EXIT)
+          menu.add.button('Musique', toggleMusic)
           c.execute ('SELECT Playername, RNG, Name FROM Obstacles ORDER BY RNG DESC LIMIT 3')
           obstacles = c.fetchall()
           c.execute ('SELECT Name, Score, Hard FROM Players ORDER BY Score DESC LIMIT 3')
           scores = c.fetchall()
-          menu2.add.button ('Back', pygame_menu.events.BACK)
-          menu2.add.button("Name | Score | Hard", printStats)
+          menu2.add.button ('Retour', pygame_menu.events.BACK)
+          menu2.add.button("Nom | Score | Difficile", printStats)
           for i in scores:
                menu2.add.button(f'{i[0]} | {i[1]} | {i[2]}', printStats)
           menu2.add.button("                         ", printStats)
-          menu2.add.button("Playername | RNG | Name", printStats)
+          menu2.add.button("Joueurnom | RNG | Nom", printStats)
           for i in obstacles:
                menu2.add.button(f'{i[0]} | {i[1]} | {i[2]}', printStats)
           if menu.is_enabled():
@@ -541,14 +541,14 @@ def gameLoop():
                hitDelay -= 1
           if playerHealth <= 0:
                playerHealth = 0
-               screen.blit (endFont.render ("Game Over!", True, (163.6, 162.5, 162.5)), (width/10, height/2.5))
+               screen.blit (endFont.render ("Fin du jeu!", True, (163.6, 162.5, 162.5)), (width/10, height/2.5))
                screen.blit (endFont.render ("Score:" + str(score), True, (0, 0, 255)), (width/5, height/2))
-               playerName = "Enemy"
+               playerName = "Ennemi"
                c.execute("INSERT OR REPLACE INTO Players VALUES (?, ?, ?)", (playerName, score, hardMode))
                conn.commit()
                iterationNum = 0
           elif score == appleNum:
-               screen.blit (endFont.render ("You Won!", True, (223.8, 225.7, 12.1)), (width/5, height/2.5))
+               screen.blit (endFont.render ("Vous avez gagné!", True, (223.8, 225.7, 12.1)), (width/5, height/2.5))
                screen.blit (endFont.render ("Score:" + str(score), True, (0, 0, 255)), (width/5, height/2))
                c.execute("INSERT OR REPLACE INTO Players VALUES (?, ?, ?)", (playerName, score, hardMode))
                conn.commit()
@@ -556,31 +556,33 @@ def gameLoop():
           
           player(playerX, playerY)
           enemy (enemyX, enemyY)
-          screen.blit (healthFont.render("Health:" + str(playerHealth), True, (255, 0, 0)), (0, 0))
+          screen.blit (healthFont.render("Indice de vie:" + str(playerHealth), True, (255, 0, 0)), (0, 0))
           screen.blit (scoreFont.render("Score:" + str(score), True, (0, 0, 255)), (0, 25))
           if iterationNum < 80 and iterationNum > 0:
-               screen.blit (startFont.render("Gotta eat em all!", True, (0, 0, 0)), (width/8, height/2.5))
+               #screen.blit (startFont.render("Gotta eat em all!", True, (0, 0, 0)), (width/8, height/2.5))
+               screen.blit (startFont.render("Vous devez tous les manger!", True, (0, 0, 0)), (width/8, height/2.5))
           clock = pygame.time.Clock()
           clock.tick (75)
           pygame.display.update()
           if iterationNum == 0:
                #pygame.time.wait(2500)
                running = False
-               print("Player: ", playerName)
+               print("Joueur: ", playerName)
                printStats()
                pygame_menu.events.EXIT
 mainMenu()
 c.close()
 conn.close()
-if playerName != "Enemy":
+if playerName != "Ennemi":
      if score == 0:
-          print ("You ate no apples.")
+          print ("Vous n'avez pas mangé de pommes")
      elif score == 1:
-          print ("You ate", score, "apple.")
-     else: print ("You ate", score, "apples.")
+          print ("Vous avez mangé", score, "pomme.")
+     else: print ("Vous avez mangé", score, "pommes.")
 else:
      if score == 0:
-          print ("The Enemy stole no apples.")
+          print ("L'ennemi n'a pas volé de pommes")
      elif score == 1:
-          print ("The Enemy stole", score, "apple.")
-     else: print ("The Enemy stole", score, "apples.")
+          print ("L'ennemi a volé", score,"pomme.")
+     else:
+          print ("L'ennemi a volé", score,"pomms.")
