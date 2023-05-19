@@ -34,7 +34,8 @@ grassImg = pygame.image.load (os.path.normpath(os.path.join("./", "res/images/gr
 grassTile = pygame.image.load (os.path.normpath(os.path.join("./", "res/images/grasstile.png")))
 menuTile = pygame.image.load (os.path.normpath(os.path.join("./", "res/images/menutile.png")))
 tinyGrassTile = pygame.image.load (os.path.normpath(os.path.join("./", "res/images/tinyGrasstile.png")))
-bombTile = pygame.image.load (os.path.normpath(os.path.join("./", "res/images/bombtile.png")))
+#bombTile = pygame.image.load (os.path.normpath(os.path.join("./", "res/images/bombtile.png")))
+bombTile = pygame.image.load (os.path.normpath(os.path.join("./", "res/images/sinkhole.png")))
 
 #player
 #playerImg = pygame.image.load(os.path.normpath(os.path.join("./", "res/images/player-black.png")))
@@ -262,7 +263,8 @@ def generateBomb (init):
      if init:
           bombNum = random.randint (randX, randY)
           for i in range (bombNum):
-               bombImg.append (pygame.image.load (os.path.normpath(os.path.join("./", "res/images/bomb.png"))))
+               #bombImg.append (pygame.image.load (os.path.normpath(os.path.join("./", "res/images/bomb.png"))))
+               bombImg.append (pygame.image.load (os.path.normpath(os.path.join("./", "res/images/sinkhole.png"))))
                randBombX = random.randint (32, width-32)
                randBombY = random.randint (32, height-32)
                while abs(randBombX-playerX) <= 5 or abs(randBombY-playerY) <= 5:
@@ -280,7 +282,8 @@ def generateBomb (init):
                          obstacleHitter = playerName
                          screen.blit (bombTile, (bombX[i], bombY[i]))
                          RNG = (bombX[i]+bombY[i])/2
-                         c.execute("INSERT OR REPLACE INTO Obstacles VALUES (?, ?, ?)", (obstacleHitter, RNG, "Bomb"))
+                         #c.execute("INSERT OR REPLACE INTO Obstacles VALUES (?, ?, ?)", (obstacleHitter, RNG, "Bomb"))
+                         c.execute("INSERT OR REPLACE INTO Obstacles VALUES (?, ?, ?)", (obstacleHitter, RNG, "Hole"))
                          bombImg[i] = bombTile
                          bombSound.play()
                          bombSound.set_volume(0.1)
@@ -293,13 +296,14 @@ def generateBomb (init):
                          enemySpeed += 0.5
                          RNG = (bombX[i]+bombY[i])/2
                          obstacleHitter = "Enemy"
-                         c.execute("INSERT OR REPLACE INTO Obstacles VALUES (?, ?, ?)", (obstacleHitter, RNG, "Bomb"))
+                         #c.execute("INSERT OR REPLACE INTO Obstacles VALUES (?, ?, ?)", (obstacleHitter, RNG, "Bomb"))
+                         c.execute("INSERT OR REPLACE INTO Obstacles VALUES (?, ?, ?)", (obstacleHitter, RNG, "Hole"))
                          screen.blit (bombTile, (bombX[i], bombY[i]))
                          bombImg[i] = bombTile
                          bombSound.play()
                          bombSound.set_volume(0.1)
                     else:
-                         if playerX == bombX[i] and playerY == bombY[i]:
+                         if playerX == bombX[i] and playerY == bombY[i] and enemyX != bombX[i] and enemyX != bombY[i]:
                               obstacleHitter = playerName
                               playerX -= 5
                               playerY -= 5
