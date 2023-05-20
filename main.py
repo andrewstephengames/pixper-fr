@@ -35,7 +35,7 @@ grassTile = pygame.image.load (os.path.normpath(os.path.join("./", "res/images/g
 menuTile = pygame.image.load (os.path.normpath(os.path.join("./", "res/images/menutile.png")))
 tinyGrassTile = pygame.image.load (os.path.normpath(os.path.join("./", "res/images/tinyGrasstile.png")))
 #bombTile = pygame.image.load (os.path.normpath(os.path.join("./", "res/images/bombtile.png")))
-bombTile = pygame.image.load (os.path.normpath(os.path.join("./", "res/images/sinkhole.png")))
+bombTile = pygame.image.load (os.path.normpath(os.path.join("./", "res/images/deniedgrass32.png")))
 
 #player
 #playerImg = pygame.image.load(os.path.normpath(os.path.join("./", "res/images/player-black.png")))
@@ -107,7 +107,7 @@ keys = {'w': False,'a': False,'s': False,'d': False}
 # initialize score
 score = 0
 # initialize player name
-playerName = "Player"
+playerName = "Joueur"
 
 musicPaused = False
 
@@ -232,7 +232,7 @@ def generateApple (init):
                          eatSound.play()
                          eatSound.set_volume(0.1)
                          RNG = (appleX[i]+appleY[i])/2
-                         c.execute("INSERT OR REPLACE INTO Obstacles VALUES (?, ?, ?)", (playerName, RNG, "Apple"))
+                         c.execute("INSERT OR REPLACE INTO Obstacles VALUES (?, ?, ?)", (playerName, RNG, "Pomme"))
                          score += 1
                          playerSpeed += 0.25
                          screen.blit (tinyGrassTile, (appleX[i], appleY[i]))
@@ -264,7 +264,7 @@ def generateBomb (init):
           bombNum = random.randint (randX, randY)
           for i in range (bombNum):
                #bombImg.append (pygame.image.load (os.path.normpath(os.path.join("./", "res/images/bomb.png"))))
-               bombImg.append (pygame.image.load (os.path.normpath(os.path.join("./", "res/images/sinkhole.png"))))
+               bombImg.append (pygame.image.load (os.path.normpath(os.path.join("./", "res/images/denytile32.png"))))
                randBombX = random.randint (32, width-32)
                randBombY = random.randint (32, height-32)
                while abs(randBombX-playerX) <= 5 or abs(randBombY-playerY) <= 5:
@@ -283,7 +283,7 @@ def generateBomb (init):
                          screen.blit (bombTile, (bombX[i], bombY[i]))
                          RNG = (bombX[i]+bombY[i])/2
                          #c.execute("INSERT OR REPLACE INTO Obstacles VALUES (?, ?, ?)", (obstacleHitter, RNG, "Bomb"))
-                         c.execute("INSERT OR REPLACE INTO Obstacles VALUES (?, ?, ?)", (obstacleHitter, RNG, "Hole"))
+                         c.execute("INSERT OR REPLACE INTO Obstacles VALUES (?, ?, ?)", (obstacleHitter, RNG, "Vignette de refus"))
                          bombImg[i] = bombTile
                          bombSound.play()
                          bombSound.set_volume(0.1)
@@ -297,7 +297,7 @@ def generateBomb (init):
                          RNG = (bombX[i]+bombY[i])/2
                          obstacleHitter = "Ennemi"
                          #c.execute("INSERT OR REPLACE INTO Obstacles VALUES (?, ?, ?)", (obstacleHitter, RNG, "Bomb"))
-                         c.execute("INSERT OR REPLACE INTO Obstacles VALUES (?, ?, ?)", (obstacleHitter, RNG, "Hole"))
+                         c.execute("INSERT OR REPLACE INTO Obstacles VALUES (?, ?, ?)", (obstacleHitter, RNG, "Vignette de refus"))
                          screen.blit (bombTile, (bombX[i], bombY[i]))
                          bombImg[i] = bombTile
                          bombSound.play()
@@ -417,11 +417,11 @@ def mainMenu ():
           c.execute ('SELECT Name, Score, Hard FROM Players ORDER BY Score DESC LIMIT 3')
           scores = c.fetchall()
           menu2.add.button ('Retour', pygame_menu.events.BACK)
-          menu2.add.button("Nom | Score | Difficile", printStats)
+          menu2.add.button("Nom du joueur | Score | Difficile", printStats)
           for i in scores:
                menu2.add.button(f'{i[0]} | {i[1]} | {i[2]}', printStats)
           menu2.add.button("                         ", printStats)
-          menu2.add.button("Joueurnom | RNG | Nom", printStats)
+          menu2.add.button("Nom du joueur | RNG | Nom d'obstacle", printStats)
           for i in obstacles:
                menu2.add.button(f'{i[0]} | {i[1]} | {i[2]}', printStats)
           if menu.is_enabled():
@@ -536,7 +536,7 @@ def gameLoop():
                hurtSound.set_volume(0.1)
                playerHealth -= 3
                playerSpeed -= 0.01
-               hitDelay = 7
+               hitDelay = 15
           elif collision and hitDelay != 0:
                hitDelay -= 1
           if playerHealth <= 0:
@@ -548,7 +548,8 @@ def gameLoop():
                conn.commit()
                iterationNum = 0
           elif score == appleNum:
-               screen.blit (endFont.render ("Vous avez gagné!", True, (223.8, 225.7, 12.1)), (width/5, height/2.5))
+               #screen.blit (endFont.render ("Vous avez gagné!", True, (223.8, 225.7, 12.1)), (width/5, height/2.5))
+               screen.blit (endFont.render ("Vous avez gagne!", True, (223.8, 225.7, 12.1)), (width/5, height/2.5))
                screen.blit (endFont.render ("Score:" + str(score), True, (0, 0, 255)), (width/5, height/2))
                c.execute("INSERT OR REPLACE INTO Players VALUES (?, ?, ?)", (playerName, score, hardMode))
                conn.commit()
