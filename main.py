@@ -588,4 +588,4 @@ else:
      elif score == 1:
           print ("L'ennemi a volé", score,"pomme.")
      else:
-          print ("L'ennemi a volé", score,"pomms.")
+          print ("L'ennemi a volé", score,"pommes.")
