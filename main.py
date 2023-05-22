@@ -80,7 +80,9 @@ treeNum = 0
 healthFont = pygame.font.Font (os.path.normpath(os.path.join ("./", "res/fonts/Emulogic.ttf")), 20)
 scoreFont = pygame.font.Font (os.path.normpath(os.path.join("./", "res/fonts/Emulogic.ttf")), 20)
 startFont = pygame.font.Font (os.path.normpath(os.path.join("./", "res/fonts/Emulogic.ttf")), 40)
+vingtFont = pygame.font.Font (os.path.normpath(os.path.join("./", "res/fonts/Emulogic.ttf")), 25)
 endFont = pygame.font.Font (os.path.normpath(os.path.join("./", "res/fonts/Emulogic.ttf")), 30)
+overFont = pygame.font.Font (os.path.normpath(os.path.join("./", "res/fonts/Emulogic.ttf")), 60)
 titleFont = pygame.font.Font (os.path.normpath(os.path.join("./", "res/fonts/Emulogic.ttf")), 100)
 
 # sounds
@@ -345,7 +347,7 @@ def titleBlit():
 # initialize the menus
 
 menu = pygame_menu.Menu('Pixper', width, height, theme=pygame_menu.themes.THEME_DARK)
-menu2 = pygame_menu.Menu('Stats', width, height, theme=pygame_menu.themes.THEME_DARK)
+menu2 = pygame_menu.Menu('Statistiques', width, height, theme=pygame_menu.themes.THEME_DARK)
 
 
 def startGame():
@@ -474,8 +476,8 @@ def gameLoop():
                     
                     #screen.blit (grassImg, (0, 0))
                     #grassTile.blit(grassTile, (0, 0))
-                    if iterationNum < 20:
-                         screen.blit (startFont.render("Gotta eat em all!", True, (0, 0, 0)), (width/8, height/2))
+                    #if iterationNum < 20:
+                         #screen.blit (startFont.render("Gotta eat em all!", True, (0, 0, 0)), (width/8, height/2))
                     pygame.display.update()
                if event.type == pygame.QUIT:
                     running = False
@@ -541,8 +543,8 @@ def gameLoop():
                hitDelay -= 1
           if playerHealth <= 0:
                playerHealth = 0
-               screen.blit (endFont.render ("Fin du jeu!", True, (163.6, 162.5, 162.5)), (width/10, height/2.5))
-               screen.blit (endFont.render ("Score:" + str(score), True, (0, 0, 255)), (width/5, height/2))
+               screen.blit (overFont.render ("Fin du jeu!", True, (163.6, 162.5, 162.5)), (width/10, height/2.5))
+               screen.blit (overFont.render ("Score:" + str(score), True, (0, 0, 255)), (width/5, height/2))
                playerName = "Ennemi"
                c.execute("INSERT OR REPLACE INTO Players VALUES (?, ?, ?)", (playerName, score, hardMode))
                conn.commit()
@@ -561,7 +563,7 @@ def gameLoop():
           screen.blit (scoreFont.render("Score:" + str(score), True, (0, 0, 255)), (0, 25))
           if iterationNum < 80 and iterationNum > 0:
                #screen.blit (startFont.render("Gotta eat em all!", True, (0, 0, 0)), (width/8, height/2.5))
-               screen.blit (startFont.render("Vous devez tous les manger!", True, (0, 0, 0)), (width/8, height/2.5))
+               screen.blit (vingtFont.render("Vous devez tous les manger!", True, (0, 0, 0)), (width/8, height/2.5))
           clock = pygame.time.Clock()
           clock.tick (75)
           pygame.display.update()
