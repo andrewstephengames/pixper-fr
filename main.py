@@ -290,9 +290,9 @@ def generateBomb (init):
                          bombSound.play()
                          bombSound.set_volume(0.1)
                          hurtSound.play()
-#                    else:
-#                         playerX -= 32
-#                         playerY -= 32
+                    else:
+                         playerX -= 16
+                         playerY -= 16
                if isCollision (enemyX, enemyY, bombX[i], bombY[i], 30):
                     if bombImg[i] != bombTile:
                          enemySpeed += 0.5
