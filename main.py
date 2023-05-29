@@ -91,7 +91,7 @@ hurtSound = pygame.mixer.Sound (os.path.normpath(os.path.join("./", "res/sounds/
 bombSound = pygame.mixer.Sound (os.path.normpath(os.path.join("./", "res/sounds/boom.ogg")))
 eatSound = pygame.mixer.Sound (os.path.normpath(os.path.join("./", "res/sounds/eat.ogg")))
 hurtSound.set_volume(0.25)
-bombSound.set_volume(0.25)
+bombSound.set_volume(0.50)
 eatSound.set_volume(0.25)
 
 # music
