@@ -485,25 +485,25 @@ def gameLoop():
                # if keystroke is pressed, check which one
                if event.type == pygame.KEYDOWN:
                     pygame.key.set_repeat(15)
-                    if event.key == pygame.K_w:
+                    if event.key == pygame.K_w or event.key == pygame.K_UP:
                          keys['w'] = True
-                    if event.key == pygame.K_a:
+                    if event.key == pygame.K_a or event.key == pygame.K_LEFT:
                          keys['a'] = True
-                    if event.key == pygame.K_s:
+                    if event.key == pygame.K_s or event.key == pygame.K_DOWN:
                          keys['s'] = True
-                    if event.key == pygame.K_d:
+                    if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                          keys['d'] = True
                     if event.key == pygame.K_q:
                          running = False
                          pygame_menu.events.EXIT
                elif event.type == pygame.KEYUP:
-                    if event.key == pygame.K_w:
+                    if event.key == pygame.K_w or event.key == pygame.K_UP:
                          keys['w'] = False
-                    if event.key == pygame.K_a:
+                    if event.key == pygame.K_a or event.key == pygame.K_LEFT:
                          keys['a'] = False
-                    if event.key == pygame.K_s:
+                    if event.key == pygame.K_s or event.key == pygame.K_DOWN:
                          keys['s'] = False
-                    if event.key == pygame.K_d:
+                    if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                          keys['d'] = False
                     
           if keys['w']:
