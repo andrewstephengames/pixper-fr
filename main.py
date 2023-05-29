@@ -91,7 +91,7 @@ hurtSound = pygame.mixer.Sound (os.path.normpath(os.path.join("./", "res/sounds/
 bombSound = pygame.mixer.Sound (os.path.normpath(os.path.join("./", "res/sounds/boom.ogg")))
 eatSound = pygame.mixer.Sound (os.path.normpath(os.path.join("./", "res/sounds/eat.ogg")))
 hurtSound.set_volume(0.25)
-bombSound.set_volume(0.50)
+bombSound.set_volume(2.00)
 eatSound.set_volume(0.25)
 
 # music
@@ -285,7 +285,7 @@ def generateBomb (init):
                          screen.blit (bombTile, (bombX[i], bombY[i]))
                          RNG = (bombX[i]+bombY[i])/2
                          #c.execute("INSERT OR REPLACE INTO Obstacles VALUES (?, ?, ?)", (obstacleHitter, RNG, "Bomb"))
-                         c.execute("INSERT OR REPLACE INTO Obstacles VALUES (?, ?, ?)", (obstacleHitter, RNG, "Vignette de refus"))
+                         c.execute("INSERT OR REPLACE INTO Obstacles VALUES (?, ?, ?)", (obstacleHitter, RNG, "Cible"))
                          bombImg[i] = bombTile
                          bombSound.play()
                          bombSound.set_volume(0.1)
@@ -299,7 +299,7 @@ def generateBomb (init):
                          RNG = (bombX[i]+bombY[i])/2
                          obstacleHitter = "Ennemi"
                          #c.execute("INSERT OR REPLACE INTO Obstacles VALUES (?, ?, ?)", (obstacleHitter, RNG, "Bomb"))
-                         c.execute("INSERT OR REPLACE INTO Obstacles VALUES (?, ?, ?)", (obstacleHitter, RNG, "Vignette de refus"))
+                         c.execute("INSERT OR REPLACE INTO Obstacles VALUES (?, ?, ?)", (obstacleHitter, RNG, "Cible"))
                          screen.blit (bombTile, (bombX[i], bombY[i]))
                          bombImg[i] = bombTile
                          bombSound.play()
