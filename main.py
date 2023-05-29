@@ -198,7 +198,7 @@ def toggleDifficulty():
      else:
 	     hardMode = False
 	     randX = 8
-	     randY = 32
+	     randY = 24
 	     enemySpeed = 1
 	     screen.blit (healthFont.render("Mode difficile desactive!", True, (255, 255, 255)), (0, 0))
 	     print("Mode difficile desactive!")
@@ -216,7 +216,7 @@ def generateApple (init):
           randY = 64
      else:
           randX = 8
-          randY = 32
+          randY = 24
      if init:
           appleNum = random.randint (randX, randY)
           for i in range (appleNum):
@@ -260,7 +260,7 @@ def generateBomb (init):
           randY = 96
      else:
           randX = 8
-          randY = 32
+          randY = 24
      if init:
           bombNum = random.randint (randX, randY)
           for i in range (bombNum):
@@ -348,10 +348,13 @@ def titleBlit():
 menu = pygame_menu.Menu('Pixper', width, height, theme=pygame_menu.themes.THEME_DARK)
 menu2 = pygame_menu.Menu('Statistiques', width, height, theme=pygame_menu.themes.THEME_DARK)
 
-
 def startGame():
     global menu
     gameLoop()
+    if not menu.is_enabled():
+          menu.enable()
+          gameLoop()
+          menu.disable()
     menu.disable()
 
 def storePlayer(name):
@@ -572,7 +575,7 @@ def gameLoop():
                running = False
                print("Joueur: ", playerName)
                printStats()
-               for i in range (15000):
+               for i in range (20000):
                     if playerHealth <= 0:
                          screen.blit (overFont.render ("Fin du jeu!", True, (163.6, 162.5, 162.5)), (width/10, height/2.5))
                          screen.blit (overFont.render ("Score:" + str(score), True, (0, 0, 255)), (width/5, height/2))
