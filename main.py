@@ -91,8 +91,8 @@ titleFont = pygame.font.Font (os.path.normpath(os.path.join("./", "res/fonts/Emu
 hurtSound = pygame.mixer.Sound (os.path.normpath(os.path.join("./", "res/sounds/oof.ogg")))
 bombSound = pygame.mixer.Sound (os.path.normpath(os.path.join("./", "res/sounds/boom.ogg")))
 eatSound = pygame.mixer.Sound (os.path.normpath(os.path.join("./", "res/sounds/eat.ogg")))
-hurtSound.set_volume(0.25)
-bombSound.set_volume(2.00)
+hurtSound.set_volume(1.00)
+bombSound.set_volume(1.00)
 eatSound.set_volume(0.25)
 
 # music
@@ -127,7 +127,7 @@ def toggleMusic():
             screen.blit (healthFont.render("Music toggled on!", True, (0, 255, 0)), (0, 0))
         musicPaused = False
 # stats.db database path
-statsPath= os.path.normpath(os.path.join("./", "res/db/stats.db"))
+statsPath = os.path.normpath(os.path.join("./", "res/db/stats.db"))
 
 # command-line arguments
 if len(sys.argv) > 1:
@@ -348,14 +348,44 @@ def titleBlit():
 menu = pygame_menu.Menu('Pixper', width, height, theme=pygame_menu.themes.THEME_DARK)
 menu2 = pygame_menu.Menu('Statistiques', width, height, theme=pygame_menu.themes.THEME_DARK)
 
+def initGame():
+    generateBomb (True)
+    generateApple (True)
+    generateGrass (True)
+    generateTree(True)
+    playerX = random.randint (0, width-32)
+    playerY = random.randint (0, height-32)
+    enemyX = random.randint (0, width-32)
+    enemyY = random.randint (0, height-32)
+    playerSpeed = 3
+    playerHealth = 10
+    hitDelay = 20
+    enemySpeed = 1
+    score = 0
+    hardMode = False
+    randX = 8
+    randY = 32
+
 def startGame():
     global menu
     gameLoop()
-    if not menu.is_enabled():
-          menu.enable()
-          gameLoop()
-          menu.disable()
     menu.disable()
+    clock = pygame.time.Clock()
+    clock.tick (75)
+    pygame.display.update()
+#if playerName != "Ennemi":
+#     if score == 0:
+#          print ("Vous n'avez pas mangé de pommes")
+#     elif score == 1:
+#          print ("Vous avez mangé", score, "pomme.")
+#     else: print ("Vous avez mangé", score, "pommes.")
+#else:
+#     if score == 0:
+#          print ("L'ennemi n'a pas volé de pommes")
+#     elif score == 1:
+#          print ("L'ennemi a volé", score,"pomme.")
+#     else:
+#          print ("L'ennemi a volé", score,"pommes.")
 
 def storePlayer(name):
     global playerName
@@ -417,10 +447,21 @@ def mainMenu (init):
 	          menu.add.button('Statistiques', menu2)
 	          menu.add.button('Quitter', pygame_menu.events.EXIT)
 	          menu.add.button('Musique', toggleMusic)
+#          else:
+#               print ("Second run")
           c.execute ('SELECT Playername, RNG, Name FROM Obstacles ORDER BY RNG DESC LIMIT 3')
           obstacles = c.fetchall()
           c.execute ('SELECT Name, Score, Hard FROM Players ORDER BY Score DESC LIMIT 3')
           scores = c.fetchall()
+#          if init:
+#               menu2.add.button ('Retour', pygame_menu.events.BACK)
+#          menu2.add.button("Nom du joueur | Score | Difficile", printStats)
+#          for i in scores:
+#               menu2.add.button(f'{i[0]} | {i[1]} | {i[2]}', printStats)
+#          menu2.add.button("                         ", printStats)
+#          menu2.add.button("Nom du joueur | RNG | Nom d'obstacle", printStats)
+#          for i in obstacles:
+#               menu2.add.button(f'{i[0]} | {i[1]} | {i[2]}', printStats)
           if init:
 	          menu2.add.button ('Retour', pygame_menu.events.BACK)
 	          menu2.add.button("Nom du joueur | Score | Difficile", printStats)
@@ -538,7 +579,7 @@ def gameLoop():
           collision = isCollision (playerX, playerY, enemyX, enemyY, 5)
           if collision and hitDelay == 0:
                hurtSound.play()
-               hurtSound.set_volume(0.1)
+               hurtSound.set_volume(0.5)
                playerHealth -= 3
                playerSpeed -= 0.01
                hitDelay = 15
@@ -575,7 +616,7 @@ def gameLoop():
                running = False
                print("Joueur: ", playerName)
                printStats()
-               for i in range (20000):
+               for i in range (500):
                     if playerHealth <= 0:
                          screen.blit (overFont.render ("Fin du jeu!", True, (163.6, 162.5, 162.5)), (width/10, height/2.5))
                          screen.blit (overFont.render ("Score:" + str(score), True, (0, 0, 255)), (width/5, height/2))
@@ -583,20 +624,12 @@ def gameLoop():
                          screen.blit (endFont.render ("Vous avez gagne!", True, (223.8, 225.7, 12.1)), (width/5, height/2.5))
                          screen.blit (endFont.render ("Score:" + str(score), True, (0, 0, 255)), (width/5, height/2))
                pygame_menu.events.EXIT
-               mainMenu(False)
+               initGame()
+               menu.enable()
+#               if menu.is_enabled():
+#                    menu.mainloop (screen)
+#                    menu.disable()
+               
 mainMenu(True)
 c.close()
 conn.close()
-if playerName != "Ennemi":
-     if score == 0:
-          print ("Vous n'avez pas mangé de pommes")
-     elif score == 1:
-          print ("Vous avez mangé", score, "pomme.")
-     else: print ("Vous avez mangé", score, "pommes.")
-else:
-     if score == 0:
-          print ("L'ennemi n'a pas volé de pommes")
-     elif score == 1:
-          print ("L'ennemi a volé", score,"pomme.")
-     else:
-          print ("L'ennemi a volé", score,"pommes.")
