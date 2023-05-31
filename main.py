@@ -98,7 +98,15 @@ eatSound.set_volume(0.25)
 # music
 
 #mainMusic = pygame.mixer.music.load("res/music/mainmusic.ogg")
-mainMusic = pygame.mixer.music.load(os.path.normpath(os.path.join("./", "res/music/music1.ogg")))
+musicChance = random.randint(0, 3)
+if musicChance == 0:
+     mainMusic = pygame.mixer.music.load(os.path.normpath(os.path.join("./", "res/music/music1.ogg")))
+if musicChance == 1:
+     mainMusic = pygame.mixer.music.load(os.path.normpath(os.path.join("./", "res/music/music2.ogg")))
+if musicChance == 2:
+     mainMusic = pygame.mixer.music.load(os.path.normpath(os.path.join("./", "res/music/mainmusic.ogg")))
+if musicChance == 3:
+     mainMusic = pygame.mixer.music.load(os.path.normpath(os.path.join("./", "res/music/music3.ogg")))
 
 # play music indefinitely
 pygame.mixer.music.play (-1)
@@ -190,7 +198,7 @@ def toggleDifficulty():
      global hardMode, randX, randY, enemySpeed, screen, healthFont
      if not hardMode:
 	     hardMode = True
-	     randX = 16
+	     randX = 32
 	     randY = 64
 	     enemySpeed = 2
 	     screen.blit (healthFont.render("Mode difficile active!", True, (255, 0, 0)), (0, 0))
@@ -211,12 +219,12 @@ def generateApple (init):
      global appleImg, appleX, appleY, appleNum, tinyGrassTile
      global playerX, playerY, playerSpeed, score, width, height, playerHealth
      global randX, randY, randAppleX, randAppleY, playerName, conn, c
-     if hardMode:
-          randX = 16
-          randY = 64
-     else:
-          randX = 8
-          randY = 24
+#     if hardMode:
+#          randX = 16
+#          randY = 64
+#     else:
+#          randX = 8
+#          randY = 24
      if init:
           appleNum = random.randint (randX, randY)
           for i in range (appleNum):
@@ -313,7 +321,7 @@ def generateBomb (init):
 def generateTree (init):
      global treeImg, treeX, treeY, treeNum, playerX, playerY
      if init:
-          treeNum = random.randint (16, 64)
+          treeNum = random.randint (16, 32)
           for i in range (treeNum):
                treeImg.append (pygame.image.load (os.path.normpath(os.path.join("./", "res/images/tree.png"))))
                treeX.append (random.randint (0, width-32))
@@ -624,7 +632,7 @@ def gameLoop():
                          screen.blit (endFont.render ("Vous avez gagne!", True, (223.8, 225.7, 12.1)), (width/5, height/2.5))
                          screen.blit (endFont.render ("Score:" + str(score), True, (0, 0, 255)), (width/5, height/2))
                pygame_menu.events.EXIT
-               initGame()
+               #initGame()
                menu.enable()
 #               if menu.is_enabled():
 #                    menu.mainloop (screen)
