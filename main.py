@@ -218,13 +218,13 @@ def isCollision (x1, y1, x2, y2, collide):
 def generateApple (init):
      global appleImg, appleX, appleY, appleNum, tinyGrassTile
      global playerX, playerY, playerSpeed, score, width, height, playerHealth
-     global randX, randY, randAppleX, randAppleY, playerName, conn, c
-#     if hardMode:
-#          randX = 16
-#          randY = 64
-#     else:
-#          randX = 8
-#          randY = 24
+     global randX, randY, randAppleX, randAppleY, playerName, conn, c, hardMode
+     if hardMode:
+          randX = 16
+          randY = 64
+     else:
+          randX = 8
+          randY = 24
      if init:
           appleNum = random.randint (randX, randY)
           for i in range (appleNum):
@@ -262,7 +262,7 @@ def generateGrass (init):
 def generateBomb (init):
      global bombNum, bombImg, bombX, bombY, width, height, playerHealth
      global enemyX, enemyY, playerX, playerY, playerSpeed, enemySpeed
-     global bombTile, randX, randY, c, conn, playerName, enemyName
+     global bombTile, randX, randY, c, conn, playerName, enemyName, hardMode
      if hardMode:
           randX = 48
           randY = 96
@@ -298,8 +298,8 @@ def generateBomb (init):
                          bombSound.set_volume(0.1)
                          hurtSound.play()
                     else:
-                         playerX -= 16
-                         playerY -= 16
+                         playerX -= 2
+                         playerY -= 2
                if isCollision (enemyX, enemyY, bombX[i], bombY[i], 30):
                     if bombImg[i] != bombTile:
                          enemySpeed += 0.5
